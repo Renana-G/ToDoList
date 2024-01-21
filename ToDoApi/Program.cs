@@ -58,11 +58,11 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 //swagger 
-if (app.Environment.IsDevelopment())
-{
+// if (app.Environment.IsDevelopment())
+// {
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+// }
 
 //cors
 app.UseCors("AllowAll");
@@ -168,6 +168,6 @@ app.MapDelete("/task/{id}", (int id, ToDoDbContext context) => {
 //.RequireAuthorization();
 
 
-app.MapGet("/", () => "Hello World!");
+app.MapGet("/", () => "The app is running");
 
 app.Run();
