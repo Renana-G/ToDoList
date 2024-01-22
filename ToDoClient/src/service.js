@@ -49,6 +49,8 @@ export default {
 
   getTasks: async () => {
       const result = await axios.get("/task")
+      console.log(result.data);
+      debugger;
       return result.data || [];
   },
 
