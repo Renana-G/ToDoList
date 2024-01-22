@@ -17,17 +17,20 @@ builder.Configuration.AddJsonFile("appsettings.json");
 builder.Services.AddDbContext<ToDoDbContext>();
 
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll",
-        builder =>
-        {
-            builder.WithOrigins("http://localhost:3000", "https://todolist-pe48.onrender.com/") 
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials();
-        });
-});
+// builder.Services.AddCors(options =>
+// {
+//     options.AddPolicy("AllowAll",
+//         builder =>
+//         {
+//             builder.WithOrigins("http://localhost:3000", "https://todolist-pe48.onrender.com/") 
+//                 .AllowAnyMethod()
+//                 .AllowAnyHeader()
+//                 .AllowCredentials();
+//         });
+// });
+
+builder.Services.AddCors();
+ 
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -66,7 +69,12 @@ var app = builder.Build();
 // }
 
 //cors
-app.UseCors("AllowAll");
+// app.UseCors("AllowAll");
+ app.UseCors(builder => builder
+ .AllowAnyOrigin()
+ .AllowAnyMethod()
+ .AllowAnyHeader()
+);
 app.UseAuthentication();
 app.UseAuthorization();
 
