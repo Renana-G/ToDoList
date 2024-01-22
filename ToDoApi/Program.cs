@@ -22,7 +22,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAll",
         builder =>
         {
-            builder.WithOrigins("http://localhost:3000") 
+            builder.WithOrigins("http://localhost:3000", "https://todolist-pe48.onrender.com/") 
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials();
