@@ -8,6 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -111,9 +112,9 @@ app.MapPost("/register", async(User user, ToDoDbContext context)=>{
     return Results.Created($"new user created with user id: {user.Id}", user);
 });
 
-app.MapGet("/task", (ToDoDbContext context) =>{
+app.MapGet("/task", async(ToDoDbContext context) =>{
     //var str = user?.Identity?.ToString();
-    var tasks = context.Items.ToList();//.Where(task=> task.UserId==user.).ToList();
+    var tasks = await context.Items.ToListAsync();//.Where(task=> task.UserId==user.).ToList();
     return Results.Ok(tasks);
 } );
 //.RequireAuthorization();
@@ -126,7 +127,7 @@ app.MapPost("/task", async (Item item, ToDoDbContext context) =>{
 //.RequireAuthorization();
 
 
-app.MapPut("/task/{id}", (int id, Item updatedItem, ToDoDbContext context) => {
+app.MapPut("/task/{id}", async (int id, Item updatedItem, ToDoDbContext context) => {
 
     var existingItem = context.Items.FirstOrDefault(i => i.Id == id);
 
@@ -141,14 +142,14 @@ app.MapPut("/task/{id}", (int id, Item updatedItem, ToDoDbContext context) => {
     context.Items.Update(existingItem);
 
     // Save changes to the database
-    context.SaveChanges();
+    await context.SaveChangesAsync();
 
     return Results.Ok($"Task #{existingItem.Id} updated successfully");
 
 });
 //.RequireAuthorization();
 
-app.MapDelete("/task/{id}", (int id, ToDoDbContext context) => {
+app.MapDelete("/task/{id}", async(int id, ToDoDbContext context) => {
     
     var existingItem = context.Items.FirstOrDefault(i => i.Id == id);
 
@@ -161,7 +162,7 @@ app.MapDelete("/task/{id}", (int id, ToDoDbContext context) => {
     context.Items.Remove(existingItem);
 
     // Save changes to the database
-    context.SaveChanges();
+    await context.SaveChangesAsync();
 
     return Results.Ok($"Task #{existingItem.Id} deleted successfully");
 });
