@@ -118,9 +118,9 @@ app.MapGet("/task", (ToDoDbContext context) =>{
 } );
 //.RequireAuthorization();
 
-app.MapPost("/task", (Item item, ToDoDbContext context) =>{
+app.MapPost("/task", async (Item item, ToDoDbContext context) =>{
     context.Items.Add(item);
-    context.SaveChanges();
+    await context.SaveChangesAsync();
     return Results.Created($"new task created with id:{item.Id}", item);
 } );
 //.RequireAuthorization();
